@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City selector</title>
+    <link rel="stylesheet" href="css/master.css">
+</head>
+<body>
+    <div class="img">
+        <div class="api">
+            <div class="heading">
+             European Cities Weather
+
+            </div>
+
+            <div class="select">
+                
+                <label for="citySelector">Select a city:</label>
+  <select id="citySelector" onchange="getCoordinates()" >
+    <option value="Amsterdam" selected>Amsterdam , Netherlands</option>
+    <option value="Ankara">Ankara , Turkey</option>
+    <option value="Astorp">Astorp ,Sweden</option>
+    <option value="Athens">Athens , Greece</option>
+    <option value="Belfast">Belfast , Northern Ireland</option>
+    <option value="Barcelona">Barcelona, Spain</option>
+    <option value="Berlin">Berlin, Germany</option>
+    <option value="Bern">Bern , Switzerland</option>
+    <option value="Bilbao">Bilbao,Spain</option>
+    <option value="Brussels">Brussels,Belgium</option>
+    <option value="Bucharest">Bucharest,Romania</option>
+
+    <option value="Barcelona">Barcelona, Spain</option>
+    <option value="Berlin">Berlin, Germany</option>
+    <option value="Bern">Bern , Switzerland</option>
+    <option value="Bilbao">Bilbao,Spain</option>
+    <option value="Brussels">Brussels,Belgium</option>
+    <option value="Bucharest">Bucharest,Romania</option>
+    <option value="Budapest">Budapest,Hungary</option>
+    <option value="Cardiff">Cardiff,Wales</option>
+    <option value="Cologne">Cologne,Germany</option>
+    <option value="Copenhagen">Copenhagen,Denmark</option>
+    <option value="Cork">Cork,Ireland</option>
+    <option value="Dublin">Dublin,Ireland</option>
+    <option value="Edinburgh">Edinburgh,Scotland</option>
+
+    <option value="Florence,Italy">Florence,Italy</option>
+    <option value="Frankfurt,Germany">Frankfurt,Germany </option>
+    <option value="French Riviera,France">French Riviera,France</option>
+    <option value="Funchal,Portugual">Funchal,Portugual</option>
+    <option value="Gibraltar">Gibraltar</option>
+    <!-- Add more cities as needed -->
+  </select>
+  <p id="coordinates">Coordinates: </p>
+
+            </div>
+
+            <div class="display">
+                <!-- Weather boxes for seven days -->
+                <a href="displaysingle.html" id="day1" class="weather-box">
+
+                </a>
+                <a href="displaysingle.html" id="day2" class="weather-box">2</a>
+                <a href="displaysingle.html" id="day3" class="weather-box">3</a>
+                <a href="displaysingle.html" id="day4" class="weather-box">4</a>
+                <a href="displaysingle.html" id="day5" class="weather-box">5</a>
+                <a href="displaysingle.html" id="day6" class="weather-box">6</a>
+                <a href="displaysingle.html" id="day7" class="weather-box">7</a>
+
+                
+             
+            </div>
+        </div>
+    </div>
+   
+
+    <script>
+     
+        async function getCoordinates() {
+          var citySelector = document.getElementById('citySelector');
+          var selectedCity = citySelector.options[citySelector.selectedIndex].value;
+         
+    
+    
+          // Replace the switch statement with actual coordinates for each city
+          var coordinates;
+          switch (selectedCity) {
+            
+    
+    
+    
+    
+    case 'Florence,Italy':
+              coordinates = { latitude:43.7696,longitude:11.255};
+              break;
+            case 'Frankfurt,Germany':
+              coordinates = { latitude:50.110, longitude:8.682};
+              break;
+           case 'French Riviera,France':
+              coordinates = { latitude:43.254, longitude:6.637};
+              break;
+            case 'Funchal,Portugual':
+              coordinates = { latitude:32.650,longitude:-16.908};
+              break;
+            case 'Gibraltar':
+              coordinates = { latitude:36.140, longitude:-5.353 };
+              break;
+    
+    
+            case 'Cologne':
+              coordinates = { latitude:50.937,longitude:6.96};
+              break;
+            case 'Copenhagen':
+              coordinates = { latitude:55.676, longitude:12.568};
+              break;
+           case 'Cork':
+              coordinates = { latitude:51.898, longitude: -8.475};
+              break;
+            case 'Dublin':
+              coordinates = { latitude:53.349,longitude:-6.26};
+              break;
+            case 'Edinburgh':
+              coordinates = { latitude:55.953, longitude:-3.188 };
+              break;
+            case 'Budapest':
+              coordinates = { latitude:59.329,longitude:18.068};
+              break;
+            case 'Cardiff':
+              coordinates = { latitude:51.483, longitude:-3.168};
+              break;
+           case 'Bilbao':
+              coordinates = { latitude: 43.263, longitude: -2.935 };
+              break;
+            case 'Brussels':
+              coordinates = { latitude:50.847,longitude:4.357};
+              break;
+            case 'Bucharest':
+              coordinates = { latitude:47.497, longitude:19.040 };
+              break;
+            case 'Amsterdam':
+              coordinates = { latitude: 52.367, longitude: 4.904 };
+              break;
+            case 'Ankara':
+              coordinates = { latitude:39.933,longitude:32.859};
+              break;
+            case 'Astorp':
+              coordinates = { latitude:56.134, longitude:12.945 };
+              break;
+            case 'Athens':
+              coordinates = { latitude: 37.983, longitude: 23.727 };
+              break;
+            case 'Belfast':
+              coordinates = { latitude:54.597, longitude:-5.930 };
+              break;  
+    
+              case 'Barcelona':
+              coordinates = { latitude:41.387,longitude:2.168};
+              break;
+            case 'Berlin':
+              coordinates = { latitude:52.520, longitude: 13.405};
+              break;
+            case 'Bern':
+              coordinates = { latitude:6.948, longitude: 7.447 };
+              break;
+             
+            // Add more cases as needed
+            default:
+              coordinates = { latitude: 0, longitude: 0 };
+          }
+    
+          var coordinatesElement = document.getElementById('coordinates');
+        coordinatesElement.textContent = 'Coordinates: ' + coordinates.latitude + ', ' + coordinates.longitude;
+
+        // Fetch data using the coordinates and update weather boxes
+        await fetchData(coordinates);
+    }
+
+    async function fetchData(coordinates) {
+        var apiUrl = `http://www.7timer.info/bin/api.pl?lon=${coordinates.longitude}&lat=${coordinates.latitude}&product=astro&output=xml`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.text();
+
+            // Parse XML data and update weather boxes
+            updateWeatherBoxes(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    // Define getDayName function
+function getDayName(date) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[date.getDay()];
+}
+
+// Rest of your script
+async function updateWeatherBoxes(data) {
+    // ... (the rest of your code)
+}
+
+    async function updateWeatherBoxes(data) {
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(data, 'text/xml');
+
+    // Assuming a simple structure, you may need to adjust based on your API response
+    var forecastNodes = xmlDoc.querySelectorAll('data');
+
+    // Define time ranges for each day
+    var dayRanges = [
+        { start: 3, end: 12 },
+        { start: 12, end: 24 },
+        { start: 24, end: 36 },
+        { start: 36, end: 48 },
+        { start: 48, end: 60 },
+        { start: 60, end: 72 },
+        { start: 72, end: 80 }
+
+
+        // Add more day ranges as needed
+    ];
+
+    // Iterate over day ranges and update day boxes
+    for (let i = 0; i < dayRanges.length; i++) {
+        var { start, end } = dayRanges[i];
+
+        // Filter forecast data for the specific day range
+        var filteredData = Array.from(forecastNodes).filter(function (forecast) {
+            var timepoint = parseInt(forecast.getAttribute('timepoint'));
+            return timepoint >= start && timepoint < end;
+        });
+
+        // Calculate the minimum and maximum temperatures for the day
+        var temperatures = filteredData.map(forecast => parseInt(forecast.querySelector('temp2m').textContent));
+        var minTemperature = Math.min(...temperatures);
+        var maxTemperature = Math.max(...temperatures);
+
+        // Extract cloud cover and precipitation rate information
+        var cloudCover = filteredData[0].querySelector('cloudcover').textContent;
+        var lifted_index= parseFloat(filteredData[0].querySelector('lifted_index').textContent);
+
+        // Determine the overall weather condition for the day based on the provided conditions
+        var weatherCondition = getWeatherCondition(cloudCover,lifted_index);
+  
+
+        
+        var currentDate = new Date();
+        var dayName = getDayName(new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + i));
+   
+
+        // Update the day box with relevant information
+        var dayContent = `${dayName} \nlow: ${minTemperature}°C  \n high: ${maxTemperature}°C  \n ${weatherCondition} `;
+        updateDayBox(i + 1, dayContent);
+    }
+}
+
+function getWeatherCondition(cloudCover, lifted_index) {
+    if (cloudCover <= 2) {
+        return 'Clear';
+    } else if (cloudCover >=2 && cloudCover <=5) {
+        return 'Partly Cloudy';
+    } else if (cloudCover >= 5 && cloudCover <= 7) {
+        return 'Cloudy';
+    } else if (cloudCover >= 7 && cloudCover <=9) {
+        return 'Rain';
+     } else if ( cloudCover<=9 && lifted_index <10 ) {
+         return 'Thunderstorm';
+    } else {
+        return 'Other';
+    }
+}
+
+function getImageSrc(weatherCondition) {
+    // Add conditions based on your specific requirements
+    switch (weatherCondition) {
+        case 'Clear':
+            return 'images/clear.png';
+        case 'Partly Cloudy':
+            return 'images/pcloudy.png';
+        case 'Cloudy':
+            return 'images/cloudy.png';
+        case 'Light rain or showers':
+        case 'Rain':
+            return 'images/rain.png';
+        default:
+            return 'images/humid.png';
+    }
+}
+
+
+
+
+function updateDayBox(day, content, weatherCondition) {
+    var dayBox = document.getElementById('day' + day);
+    var imageSrc = getImageSrc(weatherCondition);
+
+    // Split the content into lines
+    var contentLines = content.split('\n');
+
+    // Display the first line above the image and the rest below the image
+    dayBox.innerHTML = `
+    <div style="white-space: pre-line;">
+        <p style="margin-bottom: 10px;">${contentLines[0]}</p> <!-- Display the first line above the image -->
+        <img src="${imageSrc}" alt="Weather Image" style="max-width: 100px; height: auto; margin-right: 10px;">
+        ${contentLines.slice(1).join('<br>')} <!-- Display the remaining lines below the image -->
+    </div>`;
+}
+
+
+
+
+
+
+</script>
+
+      
+    
+</body>
+</html>
